@@ -1,0 +1,5 @@
+@EndUserText.label: 'Service Definition  - Renting'
+define service ZCMG_SD_RENTING {
+  expose ZCMG_I_RENTING    as Cars;
+  expose ZCMG_DET_CUSTOMER as Customers;
+}

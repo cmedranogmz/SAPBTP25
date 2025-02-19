@@ -12,7 +12,7 @@ ENDCLASS.
 
 
 
-CLASS zcmg_delete_table IMPLEMENTATION.
+CLASS ZCMG_DELETE_TABLE IMPLEMENTATION.
 
 
   METHOD if_oo_adt_classrun~main.

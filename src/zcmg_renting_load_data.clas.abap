@@ -13,7 +13,9 @@ ENDCLASS.
 
 
 
-CLASS zcmg_renting_load_data IMPLEMENTATION.
+CLASS ZCMG_RENTING_LOAD_DATA IMPLEMENTATION.
+
+
   METHOD if_oo_adt_classrun~main.
 
     DATA: lt_brands    TYPE TABLE OF zcmg_rent_brands,
@@ -232,5 +234,4 @@ CLASS zcmg_renting_load_data IMPLEMENTATION.
 
 
   ENDMETHOD.
-
 ENDCLASS.

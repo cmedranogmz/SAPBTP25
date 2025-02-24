@@ -1,0 +1,118 @@
+managed; // implementation in class zbp_cmg_i_travel unique;
+//strict ( 2 );
+
+define behavior for ZCMG_I_TRAVEL alias Travel
+implementation in class zbp_cmg_i_travel unique
+persistent table zcmg_travel
+lock master
+authorization master ( instance )
+etag master LastChangedAt
+{
+  create;
+  update;
+  delete;
+
+  field ( readonly ) LastChangedAt, LastChangedBy, CreatedAt, CreatedBy; // Administrative fields
+  field ( mandatory ) AgencyId, OverallStatus, BookingFee, CurrencyCode; // Required to create Travel
+  field ( features : instance ) TravelId; // Las caracteristicas se administran de forma dinamica en la clase
+
+  validation validateCustomer on save { field CustomerId; }
+  validation validateDates on save { field BeginDate, EndDate; }
+  validation validateStatus on save { field OverallStatus; }
+
+  action ( features : instance ) acceptTravel result [1] $self;
+  action ( features : instance ) rejectTravel result [1] $self;
+  action createTravelByTemplate result [1] $self;
+
+  association _Booking { create; }
+
+  mapping for zcmg_travel
+    {
+      TravelId      = travel_id;
+      AgencyId      = agency_id;
+      CustomerId    = customer_id;
+      BeginDate     = begin_date;
+      EndDate       = end_date;
+      BookingFee    = booking_fee;
+      TotalPrice    = total_price;
+      CurrencyCode  = currency_code;
+      Description   = description;
+      OverallStatus = overall_status;
+      CreatedBy     = created_by;
+      CreatedAt     = created_at;
+      LastChangedBy = last_changed_by;
+      LastChangedAt = last_changed_at;
+    }
+
+}
+
+define behavior for ZCMG_I_BOOKING alias Booking
+implementation in class zbp_cmg_i_booking unique
+persistent table zcmg_booking
+lock dependent by _Travel // Bloqueo por associacion de entidad
+//lock dependent ( TravelId = TravelId ) //Bloqueo por relacion de campos
+authorization dependent by _Travel
+etag master LastChangedAt
+{
+  update;
+  delete;
+
+  field ( readonly ) TravelId;
+  field ( mandatory ) CarrierId, ConnectionId, FlightDate, BookingStatus;
+
+  validation validateStatus on save { field BookingStatus; }
+
+  determination calculateTotalFlightPrice on modify { field FlightPrice, CurrencyCode; }
+
+  association _Travel;
+  association _BookingSupplement { create; }
+
+  mapping for zcmg_booking
+    {
+      TravelId      = travel_id;
+      BookingId     = booking_id;
+      BookingDate   = booking_date;
+      CustomerId    = customer_id;
+      CarrierId     = carrier_id;
+      //CarrierName= _Carrier.Name;
+      ConnectionId  = connection_id;
+      FlightDate    = flight_date;
+      FlightPrice   = flight_price;
+      CurrencyCode  = currency_code;
+      BookingStatus = booking_status;
+      LastChangedAt = last_changed_at;
+    }
+
+
+}
+
+define behavior for ZCMG_I_BOOKSUPPL alias Supplement
+implementation in class zbp_cmg_i_booksuppl unique
+with unmanaged save //persistent table zcmg_booksuppl
+lock dependent by _Travel
+authorization dependent by _Travel
+etag master LastChangedAt
+{
+  update;
+  delete;
+
+  field ( readonly ) TravelId, BookingId;
+  field ( mandatory ) SupplementId, Price;
+
+  determination calculateTotalSupplPrice on modify { field Price, CurrencyCode; }
+
+  association _Travel;
+  association _Booking;
+
+  mapping for zcmg_booksuppl
+    {
+      TravelId            = travel_id;
+      BookingId           = booking_id;
+      BookingSupplementId = booking_supplement_id;
+      SupplementId        = supplement_id;
+      Price               = price;
+      CurrencyCode        = currency_code;
+      LastChangedAt       = last_changed_at;
+    }
+
+}

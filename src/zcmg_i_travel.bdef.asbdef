@@ -4,6 +4,7 @@ managed; // implementation in class zbp_cmg_i_travel unique;
 define behavior for ZCMG_I_TRAVEL alias Travel
 implementation in class zbp_cmg_i_travel unique
 persistent table zcmg_travel
+with additional save
 lock master
 authorization master ( instance )
 etag master LastChangedAt
@@ -11,20 +12,21 @@ etag master LastChangedAt
   create;
   update;
   delete;
+  action createTravelByTemplate result [1] $self;
 
   field ( readonly ) LastChangedAt, LastChangedBy, CreatedAt, CreatedBy; // Administrative fields
-  field ( mandatory ) AgencyId, OverallStatus, BookingFee, CurrencyCode; // Required to create Travel
-  field ( features : instance ) TravelId; // Las caracteristicas se administran de forma dinamica en la clase
+  field ( mandatory : create ) AgencyId, OverallStatus, BookingFee, CurrencyCode; // Required to create Travel
+  field ( features : instance ) TravelId, OverallStatus; // Las caracteristicas se administran de forma dinamica en la clase
 
-  validation validateCustomer on save { field CustomerId; }
-  validation validateDates on save { field BeginDate, EndDate; }
-  validation validateStatus on save { field OverallStatus; }
+  validation validateCustomer on save { create; field CustomerId; }
+  validation validateDates on save { create; field BeginDate, EndDate; }
+  validation validateStatus on save { create; field OverallStatus; }
 
   action ( features : instance ) acceptTravel result [1] $self;
   action ( features : instance ) rejectTravel result [1] $self;
-  action createTravelByTemplate result [1] $self;
 
-  association _Booking { create; }
+
+  association _Booking { create ( features : instance ); }
 
   mapping for zcmg_travel
     {
@@ -50,7 +52,6 @@ define behavior for ZCMG_I_BOOKING alias Booking
 implementation in class zbp_cmg_i_booking unique
 persistent table zcmg_booking
 lock dependent by _Travel // Bloqueo por associacion de entidad
-//lock dependent ( TravelId = TravelId ) //Bloqueo por relacion de campos
 authorization dependent by _Travel
 etag master LastChangedAt
 {
@@ -58,14 +59,14 @@ etag master LastChangedAt
   delete;
 
   field ( readonly ) TravelId;
-  field ( mandatory ) CarrierId, ConnectionId, FlightDate, BookingStatus;
+  field ( mandatory : create ) BookingId, CarrierId, ConnectionId, FlightDate, BookingStatus;
 
-  validation validateStatus on save { field BookingStatus; }
+  validation validateStatus on save { create; field BookingStatus; }
 
   determination calculateTotalFlightPrice on modify { field FlightPrice, CurrencyCode; }
 
   association _Travel;
-  association _BookingSupplement { create; }
+  association _BookingSupplement { create ( features : instance ); }
 
   mapping for zcmg_booking
     {
@@ -97,7 +98,7 @@ etag master LastChangedAt
   delete;
 
   field ( readonly ) TravelId, BookingId;
-  field ( mandatory ) SupplementId, Price;
+  field ( mandatory : create ) SupplementId, Price;
 
   determination calculateTotalSupplPrice on modify { field Price, CurrencyCode; }
 

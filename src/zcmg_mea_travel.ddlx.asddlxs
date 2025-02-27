@@ -5,13 +5,12 @@
     typeNamePlural: 'Travels',
     title: {
         type: #STANDARD,
-        value: 'TravelID'
+        value: 'TravelId'
     },
     description: {
         type: #STANDARD,
         value: 'Description'
     }
-
 }
 annotate entity ZCMG_CA_TRAVEL with
 {
@@ -81,10 +80,9 @@ annotate entity ZCMG_CA_TRAVEL with
   }
 
   @EndUserText.label: 'Overall Status'
-  travelstatus;
+  OverallStatus;
 
   @UI.hidden: true
   LastChangedAt;
-
 
 }

@@ -4,13 +4,13 @@ projection;
 define behavior for ZCMG_C_TRAVEL alias Travel
 use etag
 {
-  field (readonly ) TotalPrice;
+  field ( readonly ) TotalPrice;
   use create;
   use update;
   use delete;
 
-  use action acceptTravel;
-  use action rejectTravel;
+  //  use action acceptTravel;
+  //  use action rejectTravel;
   use action createTravelByTemplate;
 
   use association _Booking { create; }
@@ -19,7 +19,7 @@ use etag
 define behavior for ZCMG_C_BOOKING alias Booking
 {
   use update;
-  //  use delete;
+  use delete;
 
   use association _Travel;
   use association _BookingSupplement { create; }
@@ -28,7 +28,7 @@ define behavior for ZCMG_C_BOOKING alias Booking
 define behavior for ZCMG_C_BOOKSUPPL alias Supplement
 {
   use update;
-  //  use delete;
+  use delete;
 
   use association _Travel;
   use association _Booking;

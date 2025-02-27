@@ -38,21 +38,21 @@ annotate entity ZCMG_C_BOOKING with
       lineItem: [{ position: 40, importance: #HIGH }],
       identification: [{ position: 40 }]
   }
-  @Consumption.valueHelpDefinition: [{ entity: { name: '/DMO/I_Customer', element: 'CustomerId' } }]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/DMO/I_Customer', element: 'CustomerID' } }]
   CustomerId;
 
   @UI: {
       lineItem: [{ position: 50, importance: #HIGH }],
       identification: [{ position: 50 }]
   }
-  @Consumption.valueHelpDefinition: [{ entity: { name: '/DMO/I_Carrier', element: 'CarrierId' } }]
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/DMO/I_Carrier', element: 'CarrierID' } }]
   CarrierId;
 
   @UI: {
       lineItem: [{ position: 60, importance: #HIGH }],
       identification: [{ position: 60 }]
   }
-  @Consumption.valueHelpDefinition: [{ entity: { name: '/DMO/I_Flight', element: 'ConnectionId' },
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/DMO/I_Flight', element: 'ConnectionID' },
         additionalBinding: [{ localElement: 'FlightDate', element: 'FlightDate' },
                             { localElement: 'CarrierId', element: 'AirlineID' },
                             { localElement: 'FlightPrice', element: 'Price' },

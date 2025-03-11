@@ -1,0 +1,36 @@
+managed implementation in class zbp_cmg_i_employee unique;
+with draft;
+
+define behavior for ZCMG_I_EMPLOYEE alias Employee
+persistent table zcmg_employee
+draft table zcmg_employee_d
+lock master
+total etag LastChangeDate
+etag master LastChangeDate
+authorization master ( instance )
+{
+  create;
+  update;
+  delete;
+  field ( readonly, numbering : managed ) ENumber;
+
+  mapping for zcmg_employee
+    {
+      ENumber        = e_number;
+      EName          = e_name;
+      EDepartament   = e_departament;
+      Status         = status;
+      JobTitle       = job_title;
+      StartDate      = start_date;
+      EndDate        = end_date;
+      Email          = email;
+      MNumber        = m_number;
+      MName          = m_name;
+      MDepartament   = m_departament;
+      CreateDateTime = create_date_time;
+      CreateUname    = create_uname;
+      LastChangeDate = last_change_date;
+      LastChangeBy   = last_change_by;
+    }
+
+}

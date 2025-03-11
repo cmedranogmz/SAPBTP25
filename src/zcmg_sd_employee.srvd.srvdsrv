@@ -1,0 +1,4 @@
+@EndUserText.label: 'Service Definition  - Employee'
+define service ZCMG_SD_EMPLOYEE {
+  expose ZCMG_C_EMPLOYEE as Employee;
+}

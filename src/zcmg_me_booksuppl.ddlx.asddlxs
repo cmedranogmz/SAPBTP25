@@ -34,8 +34,8 @@ annotate entity ZCMG_C_BOOKSUPPL with
     lineItem: [{ position: 20, importance: #HIGH }],
     identification: [{ position: 20 }]
   }
-  @Consumption.valueHelpDefinition: [{ entity: { name: '/DMO/I_Supplement', element: 'SupplementId' },
-    additionalBinding: [{ localElement: 'Price', element: 'Price' },
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/DMO/I_Supplement', element: 'SupplementID' },
+    additionalBinding: [{ localElement: 'Price', element: 'Price' }, 
                         { localElement: 'CurrencyCode', element: 'CurrencyCode' }]
   }]
   SupplementId;

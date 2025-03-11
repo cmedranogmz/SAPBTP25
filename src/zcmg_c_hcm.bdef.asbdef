@@ -1,0 +1,9 @@
+projection;
+strict ( 2 );
+
+define behavior for ZCMG_C_HCM alias HCMMaster
+{
+  use create;
+  use update;
+  use delete;
+}
